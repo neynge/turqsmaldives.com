@@ -81,13 +81,4 @@ const DEFAULT_PRODUCTS = [
     images:["https://images.unsplash.com/photo-1610694955371-d4a3e0f4c94c?w=800"] }
 ];
 
-const INSTA_POSTS = [
-  "https://www.instagram.com/p/C_ASmuDJgjR/?=500",
-  "https://images.unsplash.com/photo-1600721391689-2564bb8055de?w=500",
-  "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=500",
-  "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=500",
-  "https://images.unsplash.com/photo-1620656798579-1984d9e87df7?w=500",
-  "https://images.unsplash.com/photo-1584302179602-e4c3d3fd629d?w=500"
-];
-
 const PRODUCT_TAGS = ["", "New", "Sale", "Bestseller", "Limited"];
