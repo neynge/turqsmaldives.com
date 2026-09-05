@@ -82,3 +82,6 @@ const DEFAULT_PRODUCTS = [
 ];
 
 const PRODUCT_TAGS = ["", "New", "Sale", "Bestseller", "Limited"];
+
+<!-- SnapWidget -->
+<script src="https://snapwidget.com/js/snapwidget.js"></script>
