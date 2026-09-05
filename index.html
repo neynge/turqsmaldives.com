@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<title>Turqs MV — Fine Jewellery</title>
+<meta name="description" content="Handcrafted fine jewellery: rings, necklaces, earrings, bracelets and watches.">
+</head>
+<body>
+<header class="header">
+  <nav class="nav container">
+    <a class="logo" href="index.html">TURQS <span> MALDIVES </span></a>
+    <div class="nav-links">
+      <a class="active" href="index.html">Home</a>
+      <a href="products.html">Shop</a>
+    </div>
+    <div class="nav-actions">
+      <a class="cart-btn" href="cart.html">BAG <span class="cart-count" data-cart-count>0</span></a>
+      <button class="burger" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Crafted to be Remembered</h1>
+    <p>Ethically sourced diamonds and solid gold, hand-finished in our atelier and delivered insured worldwide.</p>
+    <a class="btn" href="products.html">Explore the collection</a>
+    <a class="btn ghost" data-insta-link href="#" target="_blank" rel="noopener">Follow on Instagram</a>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="center"><h2>Shop by Category</h2><p class="subtitle">Curated collections, managed live from the admin dashboard</p></div>
+  <div class="grid grid-3" id="categoryGrid"></div>
+</section>
+
+<section class="section container">
+  <div class="center"><h2>Featured Pieces</h2><p class="subtitle">Chosen by our master jewellers</p></div>
+  <div class="grid grid-4" id="featuredGrid"></div>
+  <div class="center" style="margin-top:28px"><a class="btn ghost" href="products.html">View all products</a></div>
+</section>
+
+<section class="insta section">
+  <div class="container center">
+    <h2>@turqs_maldives</h2>
+    <p class="subtitle">Behind the bench, new arrivals and campaign shoots</p>
+    <a class="btn" data-insta-link href="#" target="_blank" rel="noopener">Follow us on Instagram</a>
+    <div class="insta-grid" id="instaGrid"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo">TURQS <span> MALDIVES</span></div>
+        <p>Fine jewellery since 2026. </p>
+      </div>
+      <div><h4>Shop</h4>
+        <a href="products.html?cat=rings">Rings</a>
+        <a href="products.html?cat=necklaces">Necklaces</a>
+        <a href="products.html?cat=earrings">Earrings</a>
+        <a href="products.html?cat=watches">Watches</a>
+      </div>
+      <div><h4>Support</h4>
+        <a href="checkout.html">Delivery &amp; Returns</a>
+        <a href="cart.html">Your Bag</a>
+      </div>
+      <div><h4>Follow</h4>
+        <p>thohir@turqsmaldives.com</p><p>+960 7688221 </p>
+      </div>
+    </div>
+    <div class="copy">&copy; <span id="year"></span> Turqs Maldives. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

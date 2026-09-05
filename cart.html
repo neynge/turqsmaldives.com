@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<title>Your Bag — Aurum &amp; Co.</title>
+</head>
+<body>
+<header class="header">
+  <nav class="nav container">
+    <a class="logo" href="index.html">TURQS <span> MALDIVES</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Shop</a>
+    </div>
+    <div class="nav-actions">
+      <a class="cart-btn" href="cart.html">BAG <span class="cart-count" data-cart-count>0</span></a>
+      <button class="burger" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+</header>
+
+<main class="section container">
+  <h1>Your Bag</h1>
+  <p class="subtitle">Complimentary insured delivery on orders over $500.</p>
+
+  <div id="cartWrap" class="checkout-grid">
+    <div class="panel" style="overflow:auto">
+      <table class="table">
+        <thead><tr>
+          <th>Item</th><th class="num">Price</th><th class="num">Qty</th><th class="num">Total</th><th></th>
+        </tr></thead>
+        <tbody id="cartBody"></tbody>
+      </table>
+    </div>
+
+    <aside class="panel">
+      <h3>Order Summary</h3>
+      <div class="summary-row"><span>Subtotal</span><span id="sumSub">—</span></div>
+      <div class="summary-row"><span>Delivery</span><span id="sumShip">—</span></div>
+      <div class="summary-row"><span>Tax (8%)</span><span id="sumTax">—</span></div>
+      <div class="summary-row total"><span>Total</span><span id="sumTotal">—</span></div>
+      <a class="btn block" href="checkout.html" style="margin-top:18px">Proceed to checkout</a>
+      <a class="btn ghost block" href="products.html" style="margin-top:10px">Continue shopping</a>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer"><div class="container">
+  <div class="copy">&copy; <span id="year"></span> Turqs Maldives. All rights reserved.</div>
+</div></footer>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

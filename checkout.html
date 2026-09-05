@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<title>Checkout — Turqs Maldives</title>
+</head>
+<body>
+<header class="header">
+  <nav class="nav container">
+    <a class="logo" href="index.html">TURQS <span>MALDIVES </span></a>
+    <div class="nav-links"><a href="products.html">Shop</a><a href="cart.html">Bag</a></div>
+    <div class="nav-actions"><a class="cart-btn" href="cart.html">BAG <span class="cart-count" data-cart-count>0</span></a></div>
+  </nav>
+</header>
+
+<main class="section container">
+  <h1>Checkout</h1>
+  <p class="subtitle">Step 2 of 3 — delivery &amp; payment</p>
+  <div id="coAlert" class="alert"></div>
+
+  <form id="checkoutForm" class="checkout-grid" novalidate>
+    <div>
+      <section class="panel" style="margin-bottom:18px">
+        <h3>Delivery Details</h3>
+        <div class="form-row">
+          <div class="field"><label for="fullName">Full name *</label>
+            <input id="fullName" name="fullName" autocomplete="name"><span class="error"></span></div>
+          <div class="field"><label for="email">Email *</label>
+            <input id="email" name="email" type="email" autocomplete="email"><span class="error"></span></div>
+        </div>
+        <div class="field"><label for="phone">Phone *</label>
+          <input id="phone" name="phone" autocomplete="tel"><span class="error"></span></div>
+        <div class="field"><label for="address1">Address line 1 *</label>
+          <input id="address1" name="address1" autocomplete="address-line1"><span class="error"></span></div>
+        <div class="field"><label for="address2">Address line 2</label>
+          <input id="address2" name="address2" autocomplete="address-line2"></div>
+        <div class="form-row">
+          <div class="field"><label for="city">City *</label>
+            <input id="city" name="city" autocomplete="address-level2"><span class="error"></span></div>
+          <div class="field"><label for="state">State / Region *</label>
+            <input id="state" name="state" autocomplete="address-level1"><span class="error"></span></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="zip">Postal code *</label>
+            <input id="zip" name="zip" autocomplete="postal-code"><span class="error"></span></div>
+          <div class="field"><label for="country">Country *</label>
+            <select id="country" name="country">
+              <option value="">Select country</option>
+              <option>United States</option><option>United Kingdom</option><option>Canada</option>
+              <option>Australia</option><option>India</option><option>United Arab Emirates</option>
+              <option>Singapore</option><option>Germany</option>
+            </select><span class="error"></span></div>
+        </div>
+        <div class="field"><label for="shipMethod">Delivery method</label>
+          <select id="shipMethod">
+            <option value="standard">Standard insured — 3-5 business days (free over $500)</option>
+            <option value="express">Express insured — 1-2 business days (+$25)</option>
+            <option value="pickup">Boutique pickup — ready in 24 h (free)</option>
+          </select></div>
+        <div class="field"><label for="notes">Delivery notes / gift message</label>
+          <textarea id="notes" rows="3" placeholder="e.g. leave with concierge"></textarea></div>
+      </section>
+
+      <section class="panel">
+        <h3>Payment Method</h3>
+        <label class="pay-option selected" data-method="card">
+          <input type="radio" name="pay" value="card" checked>
+          <span><strong>Credit / Debit Card</strong><br>
+            <small class="hint">Visa, Mastercard, Amex — secured by Stripe</small></span>
+        </label>
+        <label class="pay-option" data-method="upi">
+          <input type="radio" name="pay" value="upi">
+          <span><strong>UPI / Net Banking</strong><br><small class="hint">Razorpay hosted checkout</small></span>
+        </label>
+        <label class="pay-option" data-method="paypal">
+          <input type="radio" name="pay" value="paypal">
+          <span><strong>PayPal</strong><br><small class="hint">You will be redirected to PayPal</small></span>
+        </label>
+        <label class="pay-option" data-method="cod">
+          <input type="radio" name="pay" value="cod">
+          <span><strong>Cash on Delivery</strong><br><small class="hint">Available on orders under $1,000</small></span>
+        </label>
+
+        <div id="cardFields" style="margin-top:18px">
+          <div class="field"><label for="cardName">Name on card *</label>
+            <input id="cardName" autocomplete="cc-name"><span class="error"></span></div>
+          <div class="field"><label for="cardNumber">Card number *</label>
+            <input id="cardNumber" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="cc-number"><span class="error"></span></div>
+          <div class="form-row">
+            <div class="field"><label for="cardExpiry">Expiry (MM/YY) *</label>
+              <input id="cardExpiry" placeholder="09/28" autocomplete="cc-exp"><span class="error"></span></div>
+            <div class="field"><label for="cardCvv">CVV *</label>
+              <input id="cardCvv" inputmode="numeric" placeholder="123" autocomplete="cc-csc"><span class="error"></span></div>
+          </div>
+          <p class="auth-note">Card data is tokenised by the gateway; it never touches our servers.</p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="panel">
+      <h3>Order Summary</h3>
+      <div id="coItems"></div>
+      <div class="summary-row" style="border-top:1px solid var(--border);margin-top:8px;padding-top:12px">
+        <span>Subtotal</span><span id="coSub"></span></div>
+      <div class="summary-row"><span>Delivery</span><span id="coShip"></span></div>
+      <div class="summary-row"><span>Tax</span><span id="coTax"></span></div>
+      <div class="summary-row total"><span>Total</span><span id="coTotal"></span></div>
+      <button class="btn block" id="payBtn" type="submit" style="margin-top:18px">Pay</button>
+      <p class="auth-note">256-bit SSL · PCI-DSS compliant gateway · 30-day returns.</p>
+    </aside>
+  </form>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>
