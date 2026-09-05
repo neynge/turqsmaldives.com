@@ -188,6 +188,11 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
 .insta-grid a{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:6px}
 .insta-grid img{height:100%;object-fit:cover;transition:.35s;opacity:.85}
 .insta-grid a:hover img{transform:scale(1.08);opacity:1}
+.insta-grid,
+.insta-grid iframe{
+  pointer-events:none;
+  user-select:none;
+}
 
 /* ---------- Toast / modal ---------- */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--surface-2);border:1px solid var(--gold);
