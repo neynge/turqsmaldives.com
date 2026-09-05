@@ -81,7 +81,8 @@ const DEFAULT_PRODUCTS = [
     images:["https://images.unsplash.com/photo-1610694955371-d4a3e0f4c94c?w=800"] }
 ];
 
+<script src="https://snapwidget.com/js/snapwidget.js"></script>
+
 const PRODUCT_TAGS = ["", "New", "Sale", "Bestseller", "Limited"];
 
-<!-- SnapWidget -->
-<script src="https://snapwidget.com/js/snapwidget.js"></script>
+
