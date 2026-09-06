@@ -9,6 +9,8 @@
    Exposes the globals the rest of the app already uses:
         CATEGORIES   PRODUCTS
    ============================================================ */
+const API_BASE = '';
+
 const Store = {
   KEY_P:'turqs_products_v1',
   KEY_C:'turqs_categories_v1',
@@ -38,8 +40,63 @@ const Store = {
       images: (p.images && p.images.length) ? p.images : ['https://placehold.co/800x800/0c2836/2dd4bf?text=Turqs']
     }));
   },
-  saveProducts(list){ Store._write(Store.KEY_P, list); Store.sync(); },
-  saveCategories(list){ Store._write(Store.KEY_C, list); Store.sync(); },
+  saveProducts(list){
+    Store._write(Store.KEY_P, list); Store.sync();
+    Store._serverSave({ products:list });
+  },
+  saveCategories(list){
+    Store._write(Store.KEY_C, list); Store.sync();
+    Store._serverSave({ categories:list });
+  },
+  _serverSave(patch){
+    const saved = Store._readObj(Store.KEY_SETTINGS, {});
+    const body = { ...patch };
+    if(Object.keys(saved).length) body.settings = saved;
+    let token = '';
+    try { token = JSON.parse(sessionStorage.getItem('turqs_session') || 'null')?.token || ''; } catch(e){}
+    if(!token) return;
+
+    fetch(`${API_BASE}/api/admin/catalog`, {
+      method:'PUT',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify(body)
+    }).then(r => {
+      if(!r.ok) throw new Error('Server save failed');
+      return r.json();
+    }).then(data => {
+      if(data.products) Store._write(Store.KEY_P, data.products);
+      if(data.categories) Store._write(Store.KEY_C, data.categories);
+      if(data.settings) Store._write(Store.KEY_SETTINGS, data.settings);
+      Store.sync();
+    }).catch(err => console.warn('[Turqs] server sync:', err.message));
+  },
+  async loadServer(){
+    try {
+      const session = JSON.parse(sessionStorage.getItem('turqs_session') || 'null');
+      if(session?.token){
+        const r = await fetch(`${API_BASE}/api/admin/catalog`, {
+          headers:{'Authorization':'Bearer '+session.token}
+        });
+        if(r.ok){
+          const data = await r.json();
+          Store._write(Store.KEY_P, data.products || []);
+          Store._write(Store.KEY_C, data.categories || []);
+          Store._write(Store.KEY_SETTINGS, data.settings || {});
+          Store.sync();
+          return;
+        }
+      }
+
+      const r = await fetch(`${API_BASE}/api/products`);
+      if(r.ok){
+        const data = await r.json();
+        if(data.products) Store._write(Store.KEY_P, data.products);
+        Store.sync();
+      }
+    } catch(e) {
+      console.warn('[Turqs] server unavailable; using local cache');
+    }
+  },
 
   /* ---------- store settings (tax %, FX rate, shipping) ---------- */
   settings(){
@@ -57,6 +114,7 @@ const Store = {
     localStorage.setItem(Store.KEY_SETTINGS, JSON.stringify(next));
     Store.applySettings();
     Store.log('Settings updated', Object.entries(patch).map(([k,v])=>`${k}: ${v}`).join(', '));
+    Store._serverSave({ settings: next });
   },
   /* mutate the live STORE object so every script (cart, checkout, admin) sees the new values */
   applySettings(){
@@ -315,3 +373,5 @@ const Store = {
 let CATEGORIES = Store.categories();
 let PRODUCTS   = Store.products();
 Store.applySettings();   // pick up any saved tax %, FX rate, shipping on first load
+
+document.addEventListener('DOMContentLoaded', () => Store.loadServer());

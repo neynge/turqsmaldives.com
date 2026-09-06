@@ -57,35 +57,42 @@ const Uploader = {
   items: [],
   el: null,
   _paste: null,
+  mode: 'product',
 
-  mount(){
+  mount(options = {}){
     if(this.el) return this.el;
+    this.mode = options.mode || 'product';
+    const isCategory = this.mode === 'category';
+    const maxFiles = isCategory ? 1 : IMG.MAX_FILES;
+    const inputId = isCategory ? 'cUploadInput' : 'upInput';
     Uploader.injectStyles();
     const holder = document.createElement('div');
     holder.className = 'up';
     holder.innerHTML = `
-      <label class="up-label">Product images</label>
+      <label class="up-label">${isCategory ? 'Category image' : 'Product images'}</label>
       <div class="up-drop" id="upDrop" tabindex="0" role="button"
-           aria-label="Upload product images from your device">
+           aria-label="Upload ${isCategory ? 'category image' : 'product images'} from your device">
         <strong>Drag photos here</strong>
         <span>or <u>browse your device</u> &middot; paste with Ctrl+V</span>
-        <small>JPG, PNG, WebP, GIF &middot; up to ${IMG.MAX_FILES} images
+        <small>JPG, PNG, WebP, GIF &middot; up to ${maxFiles} image${maxFiles === 1 ? '' : 's'}
                &middot; resized to ${IMG.MAX_EDGE}px</small>
-        <input type="file" id="upInput" accept="image/*" multiple hidden>
+        <input type="file" id="${inputId}" accept="image/*" ${isCategory ? '' : 'multiple'} hidden>
       </div>
-      <div class="up-url">
+      ${isCategory ? '' : `<div class="up-url">
         <input type="url" id="upUrl" placeholder="...or paste an image URL">
         <button type="button" class="btn neutral sm" id="upUrlBtn">Add URL</button>
-      </div>
+      </div>`}
       <div class="up-grid" id="upGrid"></div>
       <p class="hint" id="upHint"></p>`;
 
-    const anchor = qs('#fImages') ? qs('#fImages').closest('.field') : null;
+    const anchorSelector = isCategory ? '#cImg' : '#fImages';
+    const formSelector = isCategory ? '#catForm' : '#productForm';
+    const anchor = qs(anchorSelector) ? qs(anchorSelector).closest('.field') : null;
     if(anchor){
-      anchor.style.display = 'none';                    // keep the old textarea as a fallback
+      if(!isCategory) anchor.style.display = 'none';    // keep the product textarea as a fallback
       anchor.parentNode.insertBefore(holder, anchor);
     }else{
-      qs('#productForm').appendChild(holder);
+      qs(formSelector).appendChild(holder);
     }
     this.el = holder;
     this.bind();
@@ -93,7 +100,7 @@ const Uploader = {
   },
 
   bind(){
-    const drop = qs('#upDrop'), input = qs('#upInput');
+    const drop = qs('#upDrop'), input = qs(this.mode === 'category' ? '#cUploadInput' : '#upInput');
 
     input.addEventListener('click', e => e.stopPropagation());   // prevents a click loop
     drop.addEventListener('click', () => input.click());
@@ -118,7 +125,8 @@ const Uploader = {
     }));
     drop.addEventListener('drop', e => this.accept(e.dataTransfer.files));
 
-    qs('#upUrlBtn').addEventListener('click', () => {
+    const urlButton = qs('#upUrlBtn');
+    if(urlButton) urlButton.addEventListener('click', () => {
       const v = qs('#upUrl').value.trim();
       if(!v) return;
       if(!/^https?:\/\//i.test(v)) return toast('Image URL must start with http', true);
@@ -158,9 +166,10 @@ const Uploader = {
     const skipped = [];
     let added = 0;
 
+    const maxFiles = this.mode === 'category' ? 1 : IMG.MAX_FILES;
     for(const f of files){
-      if(this.items.length >= IMG.MAX_FILES){
-        skipped.push(`${f.name} (limit is ${IMG.MAX_FILES})`);
+      if(this.items.length >= maxFiles){
+        skipped.push(`${f.name} (limit is ${maxFiles})`);
         continue;
       }
       if(IMG.TYPES.indexOf(f.type) === -1){
@@ -209,7 +218,7 @@ const Uploader = {
 
     const total = this.items.reduce((s, i) => s + i.bytes, 0);
     qs('#upHint').textContent = this.items.length
-      ? `${this.items.length} of ${IMG.MAX_FILES} images · about ${kb(total)} stored in this browser`
+      ? `${this.items.length} of ${this.mode === 'category' ? 1 : IMG.MAX_FILES} images · about ${kb(total)} stored in this browser`
       : '';
   },
 
@@ -549,39 +558,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="field"><label for="cDesc">Short description</label>
           <input id="cDesc" value="${c?esc(c.desc):''}" placeholder="Delicate chains for the ankle"></div>
-        <div class="field">
-  <label for="cImg">Cover image</label>
-
-  <div style="display:flex; gap:8px; align-items:center;">
-    <input
-      id="cImg"
-      value="${c ? esc(c.img) : ''}"
-      placeholder="img/anklets.jpg"
-      style="flex:1;"
-    >
-
-    <label
-      for="cImgFile"
-      class="btn neutral"
-      style="cursor:pointer; white-space:nowrap;"
-    >
-      Upload from device
-    </label>
-
-    <input
-      type="file"
-      id="cImgFile"
-      accept="image/*"
-      style="display:none;"
-    >
-  </div>
-
-  <span class="hint">
-    Enter an image URL or upload an image from your device.
-  </span>
-
-  <div id="cImgPreview" style="margin-top:10px;"></div>
-</div>
+        <div class="field"><label for="cImg">Cover image URL</label>
+          <input id="cImg" value="${c?esc(c.img):''}" placeholder="img/anklets.jpg"></div>
         ${c ? `<p class="hint">Renaming the slug automatically re-points all
                ${Store.countProducts(c.id)} product(s) in this category.</p>` : ''}
         <div class="modal-actions">
@@ -590,12 +568,16 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </form>`);
 
+    Uploader.el = null;
+    Uploader.mount({ mode:'category' });
+    Uploader.set(c && c.img ? [c.img] : []);
+
     if(!c) qs('#cName').oninput = () => { qs('#cId').value = Store.slug(qs('#cName').value); };
 
     qs('#catForm').onsubmit = ev => {
       ev.preventDefault();
       const data = { name:qs('#cName').value, id:Store.slug(qs('#cId').value),
-                     desc:qs('#cDesc').value, img:qs('#cImg').value.trim() };
+                     desc:qs('#cDesc').value, img:Uploader.values()[0] || qs('#cImg').value.trim() };
       qsa('.field').forEach(f=>f.classList.remove('invalid'));
       const errs = Store.validateCategory(data, id);
       if(Object.keys(errs).length){
@@ -610,46 +592,6 @@ document.addEventListener('DOMContentLoaded', () => {
       toast(id ? 'Category updated' : 'Category created');
     };
   }
-
-const cImgFile = document.getElementById('cImgFile');
-const cImg = document.getElementById('cImg');
-const cImgPreview = document.getElementById('cImgPreview');
-
-cImgFile.addEventListener('change', function () {
-  const file = this.files && this.files[0];
-
-  if (!file) return;
-
-  if (!file.type.startsWith('image/')) {
-    alert('Please select an image file.');
-    this.value = '';
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    // Put the uploaded image into the image URL field
-    cImg.value = e.target.result;
-
-    // Preview
-    cImgPreview.innerHTML = `
-      <img
-        src="${e.target.result}"
-        alt="Category preview"
-        style="
-          max-width:180px;
-          max-height:120px;
-          object-fit:cover;
-          border-radius:8px;
-          border:1px solid #ddd;
-        "
-      >
-    `;
-  };
-
-  reader.readAsDataURL(file);
-});
 
   function openCategoryDelete(id){
     const c = CATEGORIES.find(x=>x.id===id);

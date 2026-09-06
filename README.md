@@ -1,68 +1,54 @@
-# Turqs Maldives. — jewellery store (HTML / CSS / JS + optional Node API)
+# Turqs Maldives — GoDaddy Node.js
 
-Static storefront with a cart, a checkout that talks to a payment gateway, and an
-**admin dashboard with full catalogue management** (categories, products, prices, stock).
+This package runs the storefront and Express API from one Node.js application.
 
-## Structure
-```
-turqs-store/
-├── index.html            Home + categories + Instagram
-├── products.html         Category list + product grid
-├── product.html          Single product view (?id=1)
-├── cart.html             Cart
-├── checkout.html         Delivery details + payment gateway
-├── thank-you.html        Order confirmation
-├── admin.html            Admin login
-├── admin-dashboard.html  Admin panel
-├── css/style.css
-├── js/
-│   ├── data.js           Seed categories + products
-│   ├── store.js          Catalogue persistence + admin CRUD
-│   ├── app.js            Shared UI, rendering, cart engine
-│   ├── checkout.js       Delivery validation + payment
-│   ├── auth.js           Login logic
-│   └── admin.js          Dashboard logic
-├── img/                  Your own photos
-└── server/               Express API (JWT auth, catalogue CRUD, Stripe)
+### Included
+
+- Express Node.js server
+- Persistent JSON database: `server/data/db.json`
+- Admin JWT login
+- Product/category CRUD
+- Category cover image upload from the admin form
+- Tax %, FX rate and shipping settings synchronization
+- Same-domain `/api/*` endpoints
+- Existing jewellery + CANVASES storefront
+- Stripe server endpoint retained for later live payment setup
+
+### Local test
+
+```bash
+npm install
+npm start
 ```
 
-## Run
-1. Open the folder in VS Code, right-click `index.html` -> **Open with Live Server**
-   (use HTTP, not `file://`).
-2. Optional API: `cd server` -> `npm install` -> `cp .env.example .env` -> `npm start`.
+Open `http://localhost:4000`.
 
-## Demo credentials
-| Role  | Email             | Password  |
-|-------|-------------------|-----------|
-| Admin | admin@turqs.com   | Admin@123 |
+Admin:
+- Email: `admin@turqs.com`
+- Password: `Admin@123`
 
-The separate customer/staff login page has been removed — only the admin panel
-requires sign-in.
+Change the admin credentials before going live with GoDaddy environment variables.
 
-Test card: `4242 4242 4242 4242`, any future expiry, any CVV.
+### GoDaddy Node.js Hosting
 
-## Admin dashboard
-* **Overview** — orders, revenue, stock value, low-stock table, catalogue activity log.
-* **Products** — add / edit / hide / delete; inline editing of price, compare-at price and stock.
-* **Categories** — add / edit / delete; deleting asks where to move the products; renaming a
-  slug re-points its products automatically.
-* **Pricing & stock** — bulk price changes (%, amount, fixed, start/end sale) with a live
-  preview, price-range report per category, and bulk restock.
-* **Settings** — set the tax rate (%) manually and the MVR/USD conversion rate used across
-  the storefront, checkout and this dashboard.
-* **Import / export** — JSON backup, restore, reset to the defaults in `js/data.js`.
+1. Upload this ZIP to GoDaddy Node.js Hosting, or connect the GitHub repository.
+2. GoDaddy will install dependencies and run `npm start`.
+3. Add these environment variables/secrets:
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `JWT_SECRET`
+   - `CLIENT_URL=https://www.turqsmaldives.com`
+   - `STRIPE_SECRET_KEY` (only when Stripe is enabled)
+   - `STRIPE_WEBHOOK_SECRET` (only when Stripe webhooks are enabled)
+4. Deploy the private preview.
+5. Test `/api/health`, the homepage, and `/admin.html`.
+6. Connect `www.turqsmaldives.com`.
+7. Publish.
 
-All changes are stored in `localStorage` and read by the storefront, so they appear on the
-shop immediately. Wire `js/store.js` to the `/api/admin/*` routes in `server/server.js`
-to move the catalogue into a real database.
+GoDaddy's current Node.js Hosting supports ZIP uploads or GitHub connections, automatically installs dependencies, and supports custom domains with HTTPS.
 
-## Customise
-1. `js/data.js` -> `STORE.instagram` — your Instagram URL (used by every ad link).
-2. `js/data.js` -> `STORE.currency`, `taxRate`, `shippingFlat`, `freeShippingOver`, `lowStockAt`.
-3. `js/checkout.js` -> `DEMO_MODE = false` and `js/auth.js` -> `USE_SERVER_AUTH = true`
-   once the API is running.
+### JSON database note
 
-## Before going live
-Recalculate every price and total on the server, store users in a database with hashed
-passwords, serve over HTTPS, keep gateway secret keys server-side only, and confirm
-payments through the gateway webhook rather than the browser redirect.
+The JSON database fixes the current in-memory catalogue problem. It is appropriate for this small application, but for a high-volume production store or guaranteed persistence across redeployments, move orders/catalogue to GoDaddy's managed MySQL database.
+
+Never commit real secrets to GitHub.

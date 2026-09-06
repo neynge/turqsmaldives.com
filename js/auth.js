@@ -1,6 +1,6 @@
 /* ============ Authentication (demo - swap for the server API) ============ */
-const API_AUTH = 'http://localhost:4000/api/auth/login';
-const USE_SERVER_AUTH = false;   // true -> POST to the backend instead of DEMO_USERS
+const API_AUTH = '/api/auth/login';
+const USE_SERVER_AUTH = true;   // true -> POST to the backend instead of DEMO_USERS
 
 const DEMO_USERS = [
   { email:'admin@turqs.com', password:'Admin@123', role:'admin', name:'Store Admin' }

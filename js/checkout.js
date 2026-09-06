@@ -1,5 +1,5 @@
 /* ============ Checkout: delivery details + payment gateway ============ */
-const API_BASE  = 'http://localhost:4000';   // your backend
+const API_BASE  = '';   // your backend
 const DEMO_MODE = true;                      // true = simulate the gateway, no server needed
 
 document.addEventListener('DOMContentLoaded', () => {
