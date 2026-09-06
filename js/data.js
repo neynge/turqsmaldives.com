@@ -7,10 +7,12 @@
 const STORE = {
   name: "Turqs Maldives",
   currency: "$",
+  homeCountry: "Maldives",
   instagram: "https://www.instagram.com/turqs_maldives/",   // <-- your IG handle
   shippingFlat: 15,
   freeShippingOver: 500,
-  taxRate: 0.08,
+  taxRate: 0.08,        // editable from Admin Dashboard -> Settings
+  fxRate: 15.42,        // MVR per 1 USD, editable from Admin Dashboard -> Settings
   lowStockAt: 3
 };
 
@@ -26,7 +28,9 @@ const DEFAULT_CATEGORIES = [
   { id:"watches",   name:"Watches",   desc:"Timeless craftsmanship",
     img:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800" },
   { id:"bridal",    name:"Bridal",    desc:"Engagement & wedding sets",
-    img:"https://images.unsplash.com/photo-1591209627636-cb0a6b1c1a5f?w=800" }
+    img:"https://images.unsplash.com/photo-1591209627636-cb0a6b1c1a5f?w=800" },
+  { id:"canvases",  name:"Canvases",  desc:"Ocean-inspired wall art, hand-stretched",
+    img:"https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800" }
 ];
 
 const DEFAULT_PRODUCTS = [
@@ -78,11 +82,28 @@ const DEFAULT_PRODUCTS = [
   { id:12, name:"Signet Ring", category:"rings", price:560, old:null, metal:"18K Yellow Gold",
     stone:"Onyx", weight:"6.5 g", sku:"AR-RG-003", stock:11, tag:null, active:true,
     desc:"A heritage-inspired signet with a hand-set onyx face, engravable.",
-    images:["https://images.unsplash.com/photo-1610694955371-d4a3e0f4c94c?w=800"] }
+    images:["https://images.unsplash.com/photo-1610694955371-d4a3e0f4c94c?w=800"] },
+  { id:13, name:"Turquoise Tide Canvas", category:"canvases", price:340, old:null, metal:"Gallery-wrapped canvas",
+    stone:"90 x 60 cm", weight:"1.4 kg", sku:"AR-CV-001", stock:9, tag:"New", active:true,
+    desc:"Hand-stretched giclee print of a turquoise reef, framed in raw oak.",
+    images:["https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800"] },
+  { id:14, name:"Deep Lagoon Triptych", category:"canvases", price:590, old:690, metal:"Gallery-wrapped canvas",
+    stone:"3-panel · 120 x 60 cm", weight:"3.1 kg", sku:"AR-CV-002", stock:5, tag:"Limited", active:true,
+    desc:"A three-panel lagoon seascape that shifts from turquoise shallows to deep navy.",
+    images:["https://images.unsplash.com/photo-1439405326854-014607f694d7?w=800"] },
+  { id:15, name:"Coral Reef Study", category:"canvases", price:265, old:null, metal:"Gallery-wrapped canvas",
+    stone:"70 x 70 cm", weight:"1.2 kg", sku:"AR-CV-003", stock:14, tag:"Bestseller", active:true,
+    desc:"A close-up coral study in aquamarine and coral tones, museum-grade pigment inks.",
+    images:["https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800"] },
+  { id:16, name:"Manta Ray Silhouette", category:"canvases", price:410, old:null, metal:"Gallery-wrapped canvas",
+    stone:"100 x 70 cm", weight:"1.9 kg", sku:"AR-CV-004", stock:7, tag:null, active:true,
+    desc:"A minimalist manta ray silhouette over a gradient ocean-blue backdrop.",
+    images:["https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800"] }
 ];
 
-<script src="https://snapwidget.com/js/snapwidget.js"></script>
-
 const PRODUCT_TAGS = ["", "New", "Sale", "Bestseller", "Limited"];
+
+/* Instagram fallback grid — the live feed on index.html is the SnapWidget iframe */
+const INSTA_POSTS = [];
 
 

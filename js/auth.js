@@ -3,8 +3,7 @@ const API_AUTH = 'http://localhost:4000/api/auth/login';
 const USE_SERVER_AUTH = false;   // true -> POST to the backend instead of DEMO_USERS
 
 const DEMO_USERS = [
-  { email:'admin@turqs.com', password:'Admin@123', role:'admin', name:'Store Admin' },
-  { email:'staff@turqs.com', password:'Staff@123', role:'staff', name:'Back Office' }
+  { email:'admin@turqs.com', password:'Admin@123', role:'admin', name:'Store Admin' }
 ];
 
 const Auth = {
@@ -15,7 +14,7 @@ const Auth = {
   guard(role){
     const s = Auth.session();
     if(!s || (role && s.role !== role)){
-      location.href = role === 'admin' ? 'admin.html' : 'login.html';
+      location.href = 'admin.html';
       return null;
     }
     return s;
@@ -39,7 +38,7 @@ const Auth = {
   }
 };
 
-/* Shared login form handler (login.html + admin.html) */
+/* Shared login form handler (admin.html) */
 function initLoginForm(formId, requiredRole, redirect){
   const form = document.querySelector('#'+formId); if(!form) return;
   const alertEl = form.querySelector('.alert');

@@ -12,7 +12,6 @@ turqs-store/
 ├── cart.html             Cart
 ├── checkout.html         Delivery details + payment gateway
 ├── thank-you.html        Order confirmation
-├── login.html            Backend (staff) login
 ├── admin.html            Admin login
 ├── admin-dashboard.html  Admin panel
 ├── css/style.css
@@ -36,7 +35,9 @@ turqs-store/
 | Role  | Email             | Password  |
 |-------|-------------------|-----------|
 | Admin | admin@turqs.com   | Admin@123 |
-| Staff | staff@turqs.com   | Staff@123 |
+
+The separate customer/staff login page has been removed — only the admin panel
+requires sign-in.
 
 Test card: `4242 4242 4242 4242`, any future expiry, any CVV.
 
@@ -47,6 +48,8 @@ Test card: `4242 4242 4242 4242`, any future expiry, any CVV.
   slug re-points its products automatically.
 * **Pricing & stock** — bulk price changes (%, amount, fixed, start/end sale) with a live
   preview, price-range report per category, and bulk restock.
+* **Settings** — set the tax rate (%) manually and the MVR/USD conversion rate used across
+  the storefront, checkout and this dashboard.
 * **Import / export** — JSON backup, restore, reset to the defaults in `js/data.js`.
 
 All changes are stored in `localStorage` and read by the storefront, so they appear on the

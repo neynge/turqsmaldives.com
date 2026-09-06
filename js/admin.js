@@ -14,8 +14,8 @@ const IMG = {
   TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
   PLACEHOLDER: 'data:image/svg+xml;utf8,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600">' +
-    '<rect width="600" height="600" fill="#1e1e24"/>' +
-    '<text x="300" y="308" fill="#9a978f" font-family="sans-serif" font-size="30" ' +
+    '<rect width="600" height="600" fill="#103548"/>' +
+    '<text x="300" y="308" fill="#7fa3ae" font-family="sans-serif" font-size="30" ' +
     'text-anchor="middle">No image</text></svg>')
 };
 
@@ -41,7 +41,7 @@ function compressImage(file){
         canvas.width = w;
         canvas.height = h;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#16161a';          // flatten PNG transparency onto the card colour
+        ctx.fillStyle = '#0c2836';          // flatten PNG transparency onto the card colour
         ctx.fillRect(0, 0, w, h);
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, w, h);
@@ -236,7 +236,7 @@ const Uploader = {
       .up-drop{border:1px dashed var(--border);border-radius:var(--radius);padding:22px 16px;
         text-align:center;cursor:pointer;transition:.2s;background:var(--surface-2)}
       .up-drop:hover,.up-drop:focus,.up-drop.over{border-color:var(--gold);
-        background:rgba(201,162,39,.08);outline:none}
+        background:rgba(45,212,191,.08);outline:none}
       .up-drop strong{display:block;font-size:.95rem;margin-bottom:4px}
       .up-drop span{display:block;font-size:.82rem;color:var(--muted)}
       .up-drop small{display:block;font-size:.72rem;color:var(--muted);margin-top:6px}
@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(name === 'products')   renderProducts();
     if(name === 'categories') renderCategories();
     if(name === 'pricing')    renderPricing();
+    if(name === 'settings')   renderSettings();
   };
   qsa('[data-tab]').forEach(a => a.onclick = e => { e.preventDefault(); showPanel(a.dataset.tab); });
 
@@ -657,6 +658,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const n = Store.restock(qty, qs('#restockLow').checked);
     refreshAll(); toast(`${n} product(s) restocked`);
   };
+
+  /* =========================================================
+     SETTINGS  (tax % + MVR/USD conversion, manually managed)
+     ========================================================= */
+  function renderSettings(){
+    const s = Store.settings();
+    qs('#taxRateInput').value = +(s.taxRate * 100).toFixed(2);
+    qs('#fxRateInput').value  = s.fxRate;
+    qs('#fxUsdInput').value   = qs('#fxUsdInput').value || 100;
+    updateConverter();
+  }
+  function updateConverter(){
+    const rate = Number(qs('#fxRateInput').value) || Store.settings().fxRate;
+    const usd = Number(qs('#fxUsdInput').value) || 0;
+    qs('#fxMvrInput').value = (usd * rate).toFixed(2);
+  }
+  qs('#saveTaxBtn').onclick = () => {
+    const pct = Number(qs('#taxRateInput').value);
+    if(isNaN(pct) || pct < 0 || pct > 100){ toast('Enter a tax rate between 0 and 100', true); return; }
+    Store.saveSettings({ taxRate: +(pct / 100).toFixed(4) });
+    toast(`Tax rate saved: ${pct}%`);
+  };
+  qs('#saveFxBtn').onclick = () => {
+    const rate = Number(qs('#fxRateInput').value);
+    if(isNaN(rate) || rate <= 0){ toast('Enter a conversion rate greater than 0', true); return; }
+    Store.saveSettings({ fxRate: rate });
+    qs('#fxRateSavedNote').textContent = `Saved: 1 USD = ${rate} MVR · used across storefront, checkout and this dashboard`;
+    updateConverter();
+    toast('Conversion rate saved');
+  };
+  qs('#fxUsdInput').addEventListener('input', updateConverter);
+  qs('#fxMvrInput').addEventListener('input', () => {
+    const rate = Number(qs('#fxRateInput').value) || Store.settings().fxRate;
+    const mvr = Number(qs('#fxMvrInput').value) || 0;
+    qs('#fxUsdInput').value = rate ? (mvr / rate).toFixed(2) : 0;
+  });
 
   /* =========================================================
      DATA  (export / import / reset)

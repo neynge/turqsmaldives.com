@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<title>Your Bag — Aurum &amp; Co.</title>
+<title>Your Bag — Turqs Maldives</title>
 </head>
 <body>
 <header class="header">
@@ -15,8 +15,10 @@
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="products.html">Shop</a>
+      <a href="products.html?cat=canvases">Canvases</a>
     </div>
     <div class="nav-actions">
+      <div class="currency-switch" role="group" aria-label="Currency"><button type="button" data-curr="USD">USD</button><button type="button" data-curr="MVR">MVR</button></div>
       <a class="cart-btn" href="cart.html">BAG <span class="cart-count" data-cart-count>0</span></a>
       <button class="burger" aria-label="Menu">&#9776;</button>
     </div>
@@ -41,7 +43,7 @@
       <h3>Order Summary</h3>
       <div class="summary-row"><span>Subtotal</span><span id="sumSub">—</span></div>
       <div class="summary-row"><span>Delivery</span><span id="sumShip">—</span></div>
-      <div class="summary-row"><span>Tax (8%)</span><span id="sumTax">—</span></div>
+      <div class="summary-row"><span id="sumTaxLabel">Tax</span><span id="sumTax">—</span></div>
       <div class="summary-row total"><span>Total</span><span id="sumTotal">—</span></div>
       <a class="btn block" href="checkout.html" style="margin-top:18px">Proceed to checkout</a>
       <a class="btn ghost block" href="products.html" style="margin-top:10px">Continue shopping</a>

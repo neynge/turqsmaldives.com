@@ -13,6 +13,7 @@ const Store = {
   KEY_P:'turqs_products_v1',
   KEY_C:'turqs_categories_v1',
   KEY_LOG:'turqs_audit_v1',
+  KEY_SETTINGS:'turqs_settings_v1',
 
   /* ---------- low level ---------- */
   _read(key, fallback){
@@ -34,14 +35,48 @@ const Store = {
       old:   p.old === null || p.old === '' || p.old === undefined ? null : Number(p.old),
       stock: Number(p.stock) || 0,
       active: p.active !== false,
-      images: (p.images && p.images.length) ? p.images : ['https://placehold.co/800x800/16161a/c9a227?text=Aurum']
+      images: (p.images && p.images.length) ? p.images : ['https://placehold.co/800x800/0c2836/2dd4bf?text=Turqs']
     }));
   },
   saveProducts(list){ Store._write(Store.KEY_P, list); Store.sync(); },
   saveCategories(list){ Store._write(Store.KEY_C, list); Store.sync(); },
 
+  /* ---------- store settings (tax %, FX rate, shipping) ---------- */
+  settings(){
+    const saved = Store._readObj(Store.KEY_SETTINGS, {});
+    return {
+      taxRate: saved.taxRate !== undefined ? Number(saved.taxRate) : STORE.taxRate,
+      fxRate: saved.fxRate !== undefined ? Number(saved.fxRate) : STORE.fxRate,
+      shippingFlat: saved.shippingFlat !== undefined ? Number(saved.shippingFlat) : STORE.shippingFlat,
+      freeShippingOver: saved.freeShippingOver !== undefined ? Number(saved.freeShippingOver) : STORE.freeShippingOver
+    };
+  },
+  saveSettings(patch){
+    const current = Store._readObj(Store.KEY_SETTINGS, {});
+    const next = { ...current, ...patch };
+    localStorage.setItem(Store.KEY_SETTINGS, JSON.stringify(next));
+    Store.applySettings();
+    Store.log('Settings updated', Object.entries(patch).map(([k,v])=>`${k}: ${v}`).join(', '));
+  },
+  /* mutate the live STORE object so every script (cart, checkout, admin) sees the new values */
+  applySettings(){
+    const s = Store.settings();
+    STORE.taxRate = s.taxRate;
+    STORE.fxRate = s.fxRate;
+    STORE.shippingFlat = s.shippingFlat;
+    STORE.freeShippingOver = s.freeShippingOver;
+  },
+  _readObj(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) return JSON.parse(JSON.stringify(fallback));
+      const val = JSON.parse(raw);
+      return (val && typeof val === 'object' && !Array.isArray(val)) ? val : JSON.parse(JSON.stringify(fallback));
+    }catch(e){ return JSON.parse(JSON.stringify(fallback)); }
+  },
+
   /* refresh the globals other scripts read */
-  sync(){ CATEGORIES = Store.categories(); PRODUCTS = Store.products(); },
+  sync(){ CATEGORIES = Store.categories(); PRODUCTS = Store.products(); Store.applySettings(); },
 
   /* ---------- helpers ---------- */
   slug(s){ return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); },
@@ -81,7 +116,7 @@ const Store = {
       active: data.active !== false,
       images:(data.images||[]).filter(Boolean)
     };
-    if(!clean.images.length) clean.images = ['https://placehold.co/800x800/16161a/c9a227?text=Aurum'];
+    if(!clean.images.length) clean.images = ['https://placehold.co/800x800/0c2836/2dd4bf?text=Turqs'];
 
     if(id){
       const i = list.findIndex(p=>p.id===id);
@@ -207,7 +242,7 @@ const Store = {
     const list = Store.categories();
     const clean = {
       id: data.id, name:String(data.name).trim(), desc:(data.desc||'').trim(),
-      img: data.img || 'https://placehold.co/800x600/16161a/c9a227?text=Category'
+      img: data.img || 'https://placehold.co/800x600/0c2836/2dd4bf?text=Category'
     };
     if(id){
       const i = list.findIndex(c=>c.id===id);
@@ -279,3 +314,4 @@ const Store = {
 /* Globals consumed by app.js / admin.js */
 let CATEGORIES = Store.categories();
 let PRODUCTS   = Store.products();
+Store.applySettings();   // pick up any saved tax %, FX rate, shipping on first load

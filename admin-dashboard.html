@@ -20,6 +20,7 @@
     <a href="#" data-tab="products">Products</a>
     <a href="#" data-tab="categories">Categories</a>
     <a href="#" data-tab="pricing">Pricing &amp; stock</a>
+    <a href="#" data-tab="settings">Settings</a>
     <a href="#" data-tab="data">Import / export</a>
     <div class="sep"></div>
     <a href="index.html">View store</a>
@@ -184,6 +185,45 @@
           <button class="btn block" id="restockBtn">Add stock</button>
           <p class="hint" style="margin-top:12px">Single items can also be edited inline on the Products tab.</p>
         </aside>
+      </div>
+    </section>
+
+    <!-- ---------- Settings ---------- -->
+    <section data-panel="settings" class="hidden">
+      <div class="settings-grid">
+        <section class="panel">
+          <h3>Tax</h3>
+          <p class="hint" style="margin-bottom:14px">
+            Set the tax rate applied at checkout and in the storefront bag. Enter a percentage,
+            e.g. <strong>8</strong> for 8%.
+          </p>
+          <div class="field"><label for="taxRateInput">Tax rate (%)</label>
+            <input id="taxRateInput" type="number" min="0" max="100" step="0.1"></div>
+          <button class="btn" id="saveTaxBtn">Save tax rate</button>
+        </section>
+
+        <section class="panel">
+          <h3>MVR / USD conversion</h3>
+          <p class="hint" style="margin-bottom:14px">
+            All catalogue prices are stored in USD. Set the MVR per 1 USD rate used by the
+            storefront currency switch, checkout and this dashboard's converter below.
+          </p>
+          <div class="field"><label for="fxRateInput">MVR per 1 USD</label>
+            <input id="fxRateInput" type="number" min="0" step="0.0001"></div>
+          <button class="btn" id="saveFxBtn">Save conversion rate</button>
+          <p class="fx-rate-note" id="fxRateSavedNote"></p>
+        </section>
+
+        <section class="panel">
+          <h3>Quick converter</h3>
+          <p class="hint" style="margin-bottom:14px">Check a value in both currencies using the saved rate.</p>
+          <div class="fx-convert">
+            <div class="field"><label for="fxUsdInput">USD</label>
+              <input id="fxUsdInput" type="number" min="0" step="0.01" value="100"></div>
+            <div class="field"><label for="fxMvrInput">MVR</label>
+              <input id="fxMvrInput" type="number" min="0" step="0.01"></div>
+          </div>
+        </section>
       </div>
     </section>
 

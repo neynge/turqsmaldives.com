@@ -2,7 +2,25 @@
 const CART_KEY   = 'Turqs_cart';
 const ORDERS_KEY = 'Turqs_orders';
 
-const money = n => STORE.currency + Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+/* ---------- Currency preference (navbar USD/MVR switch) ---------- */
+const CURRENCY_KEY = 'turqs_currency_pref';
+const CURRENCY_SYMBOLS = { USD:'$', MVR:'MVR ' };
+const CurrencyPref = {
+  get(){ return localStorage.getItem(CURRENCY_KEY) || 'USD'; },
+  set(code){ localStorage.setItem(CURRENCY_KEY, code); }
+};
+const money = n => {
+  const pref = CurrencyPref.get();
+  const rate = pref === 'MVR' ? (Number(STORE.fxRate) || 1) : 1;
+  const symbol = CURRENCY_SYMBOLS[pref] || STORE.currency;
+  return symbol + (Number(n||0) * rate).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+};
+function initCurrencySwitch(){
+  qsa('[data-curr]').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.curr === CurrencyPref.get());
+    btn.onclick = () => { CurrencyPref.set(btn.dataset.curr); location.reload(); };
+  });
+}
 const qs  = (s,el=document)=>el.querySelector(s);
 const qsa = (s,el=document)=>[...el.querySelectorAll(s)];
 const param = k => new URLSearchParams(location.search).get(k);
@@ -144,6 +162,7 @@ document.addEventListener('click', e=>{
 
 document.addEventListener('DOMContentLoaded', ()=>{
   Cart.badge();
+  initCurrencySwitch();
   if(qs('#categoryGrid')) qs('#categoryGrid').innerHTML = CATEGORIES.map(categoryCard).join('');
   if(qs('#featuredGrid'))
     qs('#featuredGrid').innerHTML = shopProducts().filter(p=>p.tag).slice(0,4).map(productCard).join('');
@@ -255,6 +274,7 @@ function initCartPage(){
       </tr>`).join('');
     qs('#sumSub').textContent   = money(t.subtotal);
     qs('#sumShip').textContent  = t.shipping? money(t.shipping) : 'Free';
+    if(qs('#sumTaxLabel')) qs('#sumTaxLabel').textContent = `Tax (${(STORE.taxRate*100).toFixed(1).replace(/\.0$/,'')}%)`;
     qs('#sumTax').textContent   = money(t.tax);
     qs('#sumTotal').textContent = money(t.total);
   }
