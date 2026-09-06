@@ -611,6 +611,46 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+const cImgFile = document.getElementById('cImgFile');
+const cImg = document.getElementById('cImg');
+const cImgPreview = document.getElementById('cImgPreview');
+
+cImgFile.addEventListener('change', function () {
+  const file = this.files && this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    alert('Please select an image file.');
+    this.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    // Put the uploaded image into the image URL field
+    cImg.value = e.target.result;
+
+    // Preview
+    cImgPreview.innerHTML = `
+      <img
+        src="${e.target.result}"
+        alt="Category preview"
+        style="
+          max-width:180px;
+          max-height:120px;
+          object-fit:cover;
+          border-radius:8px;
+          border:1px solid #ddd;
+        "
+      >
+    `;
+  };
+
+  reader.readAsDataURL(file);
+});
+
   function openCategoryDelete(id){
     const c = CATEGORIES.find(x=>x.id===id);
     const n = Store.countProducts(id);
