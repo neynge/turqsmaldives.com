@@ -549,8 +549,39 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="field"><label for="cDesc">Short description</label>
           <input id="cDesc" value="${c?esc(c.desc):''}" placeholder="Delicate chains for the ankle"></div>
-        <div class="field"><label for="cImg">Cover image URL</label>
-          <input id="cImg" value="${c?esc(c.img):''}" placeholder="img/anklets.jpg"></div>
+        <div class="field">
+  <label for="cImg">Cover image</label>
+
+  <div style="display:flex; gap:8px; align-items:center;">
+    <input
+      id="cImg"
+      value="${c ? esc(c.img) : ''}"
+      placeholder="img/anklets.jpg"
+      style="flex:1;"
+    >
+
+    <label
+      for="cImgFile"
+      class="btn neutral"
+      style="cursor:pointer; white-space:nowrap;"
+    >
+      Upload from device
+    </label>
+
+    <input
+      type="file"
+      id="cImgFile"
+      accept="image/*"
+      style="display:none;"
+    >
+  </div>
+
+  <span class="hint">
+    Enter an image URL or upload an image from your device.
+  </span>
+
+  <div id="cImgPreview" style="margin-top:10px;"></div>
+</div>
         ${c ? `<p class="hint">Renaming the slug automatically re-points all
                ${Store.countProducts(c.id)} product(s) in this category.</p>` : ''}
         <div class="modal-actions">
