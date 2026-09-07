@@ -1,3 +1,10 @@
 node_modules/
 .env
 server/data/*.tmp
+*.log
+
+uploads/products/*
+uploads/categories/*
+
+!uploads/products/.gitkeep
+!uploads/categories/.gitkeep

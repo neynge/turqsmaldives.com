@@ -9,9 +9,7 @@
 const IMG = {
   MAX_FILES: 6,            // images per product
   MAX_SOURCE_MB: 12,       // reject huge originals before reading them
-  MAX_EDGE: 900,           // longest side after resize, in pixels
-  QUALITY: 0.82,           // JPEG quality after resize
-  TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+    TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
   PLACEHOLDER: 'data:image/svg+xml;utf8,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600">' +
     '<rect width="600" height="600" fill="#103548"/>' +
@@ -21,36 +19,26 @@ const IMG = {
 
 const kb = b => b > 1048576 ? (b / 1048576).toFixed(1) + ' MB'
                             : Math.max(1, Math.round(b / 1024)) + ' KB';
+/* Upload device images to the authenticated Node API. db.json stores only returned URLs. */
+function adminToken(){
+  try { return JSON.parse(sessionStorage.getItem('turqs_session') || 'null')?.token || ''; }
+  catch(e){ return ''; }
+}
 
-/* Read the file, resize it on a canvas, return a compressed data URL.
-   Resizing matters: a 4 MB phone photo becomes roughly 120 KB, which is the
-   difference between fitting ~3 products and ~40 products in localStorage. */
-function compressImage(file){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error('could not be read'));
-    reader.onload = () => {
-      const img = new Image();
-      img.onerror = () => reject(new Error('is not a readable image'));
-      img.onload = () => {
-        let w = img.naturalWidth, h = img.naturalHeight;
-        const scale = Math.min(1, IMG.MAX_EDGE / Math.max(w, h));
-        w = Math.max(1, Math.round(w * scale));
-        h = Math.max(1, Math.round(h * scale));
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#0c2836';          // flatten PNG transparency onto the card colour
-        ctx.fillRect(0, 0, w, h);
-        ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', IMG.QUALITY));
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
+async function uploadImages(files, type){
+  const token = adminToken();
+  if(!token) throw new Error('Admin session expired. Please sign in again.');
+  const form = new FormData();
+  form.append('type', type === 'category' ? 'category' : 'product');
+  files.forEach(file => form.append('images', file, file.name));
+  const response = await fetch('/api/admin/upload', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + token },
+    body: form
   });
+  const data = await response.json().catch(() => ({}));
+  if(!response.ok) throw new Error(data.error || 'Image upload failed');
+  return Array.isArray(data.images) ? data.images : [];
 }
 
 const Uploader = {
@@ -75,7 +63,7 @@ const Uploader = {
         <strong>Drag photos here</strong>
         <span>or <u>browse your device</u> &middot; paste with Ctrl+V</span>
         <small>JPG, PNG, WebP, GIF &middot; up to ${maxFiles} image${maxFiles === 1 ? '' : 's'}
-               &middot; resized to ${IMG.MAX_EDGE}px</small>
+               &middot; uploaded securely to the server</small>
         <input type="file" id="${inputId}" accept="image/*" ${isCategory ? '' : 'multiple'} hidden>
       </div>
       ${isCategory ? '' : `<div class="up-url">
@@ -160,39 +148,36 @@ const Uploader = {
   },
 
   async accept(fileList){
-    const files = [...fileList];
-    if(!files.length) return;
-    const hint = qs('#upHint');
-    const skipped = [];
-    let added = 0;
-
     const maxFiles = this.mode === 'category' ? 1 : IMG.MAX_FILES;
-    for(const f of files){
-      if(this.items.length >= maxFiles){
-        skipped.push(`${f.name} (limit is ${maxFiles})`);
-        continue;
-      }
-      if(IMG.TYPES.indexOf(f.type) === -1){
-        skipped.push(`${f.name} (unsupported format)`);
-        continue;
-      }
-      if(f.size > IMG.MAX_SOURCE_MB * 1024 * 1024){
-        skipped.push(`${f.name} (over ${IMG.MAX_SOURCE_MB} MB)`);
-        continue;
-      }
-      hint.textContent = `Processing ${f.name}...`;
-      try{
-        const src = await compressImage(f);
-        this.push({ src, name: f.name.slice(0, 26),
-                    bytes: Math.round(src.length * 0.75), kind: 'file' });
-        added++;
-      }catch(err){
-        skipped.push(`${f.name} ${err.message}`);
+    const available = Math.max(0, maxFiles - this.items.length);
+    const incoming = [...fileList];
+    if(!incoming.length) return;
+    const skipped = [];
+    const valid = [];
+    incoming.forEach(f => {
+      if(valid.length >= available) skipped.push(`${f.name} (limit is ${maxFiles})`);
+      else if(IMG.TYPES.indexOf(f.type) === -1) skipped.push(`${f.name} (unsupported format)`);
+      else if(f.size > IMG.MAX_SOURCE_MB * 1024 * 1024) skipped.push(`${f.name} (over ${IMG.MAX_SOURCE_MB} MB)`);
+      else valid.push(f);
+    });
+    if(valid.length){
+      const hint = qs('#upHint');
+      hint.textContent = `Uploading ${valid.length} image${valid.length > 1 ? 's' : ''}...`;
+      try {
+        const urls = await uploadImages(valid, this.mode);
+        urls.forEach((src, index) => this.push({
+          src,
+          name: valid[index]?.name.slice(0, 26) || src.split('/').pop(),
+          bytes: valid[index]?.size || 0,
+          kind: 'server'
+        }));
+        toast(urls.length + ' image' + (urls.length !== 1 ? 's' : '') + ' uploaded');
+      } catch(err){
+        skipped.push(err.message);
       }
     }
     this.render();
     if(skipped.length) toast('Skipped: ' + skipped.join(', '), true);
-    else if(added)     toast(added + ' image' + (added > 1 ? 's' : '') + ' added');
   },
 
   push(item){
@@ -218,7 +203,7 @@ const Uploader = {
 
     const total = this.items.reduce((s, i) => s + i.bytes, 0);
     qs('#upHint').textContent = this.items.length
-      ? `${this.items.length} of ${this.mode === 'category' ? 1 : IMG.MAX_FILES} images · about ${kb(total)} stored in this browser`
+      ? `${this.items.length} of ${this.mode === 'category' ? 1 : IMG.MAX_FILES} images · stored on the server`
       : '';
   },
 
