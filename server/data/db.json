@@ -341,5 +341,56 @@
     "freeShippingOver": 500
   },
   "orders": [],
-  "audit": []
+  "audit": [
+    {
+      "at": "2026-09-07T04:37:20.771Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-07T04:37:14.777Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-07T04:34:48.794Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-07T04:34:28.383Z",
+      "action": "Image uploaded",
+      "detail": "5 product image(s)"
+    },
+    {
+      "at": "2026-09-07T04:34:05.502Z",
+      "action": "Image uploaded",
+      "detail": "1 product image(s)"
+    },
+    {
+      "at": "2026-09-07T04:33:09.023Z",
+      "action": "Image uploaded",
+      "detail": "1 product image(s)"
+    },
+    {
+      "at": "2026-09-07T04:32:47.671Z",
+      "action": "Image uploaded",
+      "detail": "4 product image(s)"
+    },
+    {
+      "at": "2026-09-07T04:32:17.887Z",
+      "action": "Image uploaded",
+      "detail": "1 product image(s)"
+    },
+    {
+      "at": "2026-09-07T04:31:12.314Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-07T04:31:08.522Z",
+      "action": "Image uploaded",
+      "detail": "1 category image(s)"
+    }
+  ]
 }

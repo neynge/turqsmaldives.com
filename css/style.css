@@ -51,6 +51,11 @@ h1{font-size:2.6rem} h2{font-size:2rem;margin-bottom:8px}
   background:linear-gradient(rgba(4,18,26,.66),rgba(4,18,26,.88)),
   url('https://images.unsplash.com/photo-1439405326854-014607f694d7?w=1600') center/cover}
 .hero p{color:var(--muted);max-width:520px;margin:14px auto 28px}
+@media (max-width: 768px) {
+  .hero .btn.ghost {
+    margin-top: 14px;
+  }
+}
 
 /* ---------- Grids ---------- */
 .grid{display:grid;gap:22px}
@@ -234,6 +239,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
   .form-row,.form-row.three{grid-template-columns:1fr}
   h1{font-size:2rem}
 }
+
 
 
 /* ---------- Currency switch (navbar) ---------- */
