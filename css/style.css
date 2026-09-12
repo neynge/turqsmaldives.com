@@ -254,3 +254,113 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
 .fx-convert{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
 .fx-convert .field{margin:0;flex:1;min-width:140px}
 .fx-rate-note{font-size:.75rem;color:var(--muted);margin-top:8px}
+
+/* ---------- Return and Cancellation Policy ---------- */
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4fbfc;
+      color: #173f46;
+      line-height: 1.7;
+    }
+
+    .policy-container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 25px;
+    }
+
+    .policy-card {
+      background: #ffffff;
+      padding: 45px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 70, 80, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #087f8c;
+      font-size: 36px;
+    }
+
+    .intro {
+      color: #5c777c;
+      margin-bottom: 35px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      margin-bottom: 10px;
+      color: #075f6b;
+      font-size: 22px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul {
+      padding-left: 25px;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    .email-box {
+      display: inline-block;
+      margin: 10px 0;
+      padding: 12px 18px;
+      background: #e7f7f8;
+      border-radius: 8px;
+      color: #087f8c;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .highlight {
+      background: #eef9fa;
+      border-left: 4px solid #0a8996;
+      padding: 15px 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .important {
+      font-weight: 700;
+      color: #075f6b;
+    }
+
+    .contact {
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid #d7e8ea;
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      text-align: center;
+      color: #789095;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .policy-container {
+        margin: 30px auto;
+        padding: 0 15px;
+      }
+
+      .policy-card {
+        padding: 25px 20px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
