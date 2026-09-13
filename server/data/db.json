@@ -48,7 +48,7 @@
       "id": 1,
       "name": "Solitaire Halo Ring",
       "category": "rings",
-      "price": 1290,
+      "price": 120,
       "old": 1490,
       "metal": "18K White Gold",
       "stone": "0.75ct Diamond",
@@ -67,7 +67,7 @@
       "id": 2,
       "name": "Eternity Band",
       "category": "rings",
-      "price": 940,
+      "price": 70,
       "old": null,
       "metal": "Platinum 950",
       "stone": "1.0ct Diamonds",
@@ -85,7 +85,7 @@
       "id": 3,
       "name": "Pearl Drop Pendant",
       "category": "necklaces",
-      "price": 480,
+      "price": 80,
       "old": null,
       "metal": "14K Yellow Gold",
       "stone": "Akoya Pearl",
@@ -103,7 +103,7 @@
       "id": 4,
       "name": "Emerald Cut Necklace",
       "category": "necklaces",
-      "price": 1680,
+      "price": 70,
       "old": 1890,
       "metal": "18K White Gold",
       "stone": "Colombian Emerald",
@@ -121,7 +121,7 @@
       "id": 5,
       "name": "Diamond Stud Earrings",
       "category": "earrings",
-      "price": 760,
+      "price": 50,
       "old": null,
       "metal": "18K Rose Gold",
       "stone": "0.50ct Diamonds",
@@ -139,7 +139,7 @@
       "id": 6,
       "name": "Gold Hoop Earrings",
       "category": "earrings",
-      "price": 320,
+      "price": 70,
       "old": 390,
       "metal": "14K Yellow Gold",
       "stone": "-",
@@ -157,7 +157,7 @@
       "id": 7,
       "name": "Tennis Bracelet",
       "category": "bracelets",
-      "price": 2150,
+      "price": 100,
       "old": null,
       "metal": "Platinum 950",
       "stone": "2.0ct Diamonds",
@@ -175,7 +175,7 @@
       "id": 8,
       "name": "Sapphire Bangle",
       "category": "bracelets",
-      "price": 890,
+      "price": 80,
       "old": null,
       "metal": "18K White Gold",
       "stone": "Ceylon Sapphire",
@@ -193,7 +193,7 @@
       "id": 9,
       "name": "Classic Automatic Watch",
       "category": "watches",
-      "price": 2450,
+      "price": 100,
       "old": 2790,
       "metal": "Stainless Steel",
       "stone": "Sapphire Crystal",
@@ -229,7 +229,7 @@
       "id": 11,
       "name": "Rose Gold Chain",
       "category": "necklaces",
-      "price": 410,
+      "price": 80,
       "old": null,
       "metal": "14K Rose Gold",
       "stone": "-",
@@ -247,7 +247,7 @@
       "id": 12,
       "name": "Signet Ring",
       "category": "rings",
-      "price": 560,
+      "price": 90,
       "old": null,
       "metal": "18K Yellow Gold",
       "stone": "Onyx",
@@ -265,7 +265,7 @@
       "id": 13,
       "name": "Turquoise Tide Canvas",
       "category": "canvases",
-      "price": 340,
+      "price": 70,
       "old": null,
       "metal": "Gallery-wrapped canvas",
       "stone": "90 x 60 cm",
@@ -283,7 +283,7 @@
       "id": 14,
       "name": "Deep Lagoon Triptych",
       "category": "canvases",
-      "price": 590,
+      "price": 70,
       "old": 690,
       "metal": "Gallery-wrapped canvas",
       "stone": "3-panel · 120 x 60 cm",
@@ -301,7 +301,7 @@
       "id": 15,
       "name": "Coral Reef Study",
       "category": "canvases",
-      "price": 265,
+      "price": 70,
       "old": null,
       "metal": "Gallery-wrapped canvas",
       "stone": "70 x 70 cm",
@@ -319,7 +319,7 @@
       "id": 16,
       "name": "Manta Ray Silhouette",
       "category": "canvases",
-      "price": 410,
+      "price": 70,
       "old": null,
       "metal": "Gallery-wrapped canvas",
       "stone": "100 x 70 cm",
@@ -342,6 +342,81 @@
   },
   "orders": [],
   "audit": [
+    {
+      "at": "2026-09-13T01:20:59.080Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:52.635Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:41.737Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:37.039Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:33.788Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:30.175Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:27.042Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:16.753Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:20:03.877Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:59.376Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:56.124Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:53.348Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:44.587Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:40.184Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
+    {
+      "at": "2026-09-13T01:19:36.088Z",
+      "action": "Catalogue synchronised",
+      "detail": "Admin dashboard saved catalogue/settings"
+    },
     {
       "at": "2026-09-07T04:37:20.771Z",
       "action": "Catalogue synchronised",

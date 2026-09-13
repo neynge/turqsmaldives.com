@@ -47,7 +47,7 @@ h1{font-size:2.6rem} h2{font-size:2rem;margin-bottom:8px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* ---------- Hero ---------- */
-.hero{min-height:78vh;display:grid;place-items:center;text-align:center;
+.hero{min-height:90vh;display:grid;place-items:center;text-align:center;
   background:linear-gradient(rgba(4,18,26,.66),rgba(4,18,26,.88)),
   url('https://images.unsplash.com/photo-1439405326854-014607f694d7?w=1600') center/cover}
 .hero p{color:var(--muted);max-width:520px;margin:14px auto 28px}
@@ -214,7 +214,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
 
 /* ---------- Footer ---------- */
-.footer{background:var(--surface);border-top:1px solid var(--border);padding:44px 0 26px;margin-top:60px}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:44px 0 26px;margin-top:0px}
 .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px}
 .footer h4{font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
 .footer a,.footer p{color:var(--muted);font-size:.87rem;display:block;margin-bottom:7px}
@@ -259,7 +259,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #f4fbfc;
+      background: #061821;
       color: #173f46;
       line-height: 1.7;
     }

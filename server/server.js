@@ -28,8 +28,8 @@ function loadDb(){
 let db=loadDb();
 function saveDb(){ const tmpFile=DB_FILE+'.tmp'; fs.writeFileSync(tmpFile,JSON.stringify(db,null,2),'utf8'); fs.renameSync(tmpFile,DB_FILE); }
 function audit(action,detail){ db.audit.unshift({at:new Date().toISOString(),action,detail:String(detail||'')}); db.audit=db.audit.slice(0,500); saveDb(); }
-const ADMIN_EMAIL=process.env.ADMIN_EMAIL||'admin@turqs.com';
-const ADMIN_PASSWORD=process.env.ADMIN_PASSWORD||'Admin@123';
+const ADMIN_EMAIL=process.env.ADMIN_EMAIL||'thohir@turqsmaldives.com';
+const ADMIN_PASSWORD=process.env.ADMIN_PASSWORD||'sansreyaneanG@196';
 const JWT_SECRET=process.env.JWT_SECRET||'CHANGE_THIS_JWT_SECRET';
 const users=[{id:1,email:ADMIN_EMAIL.toLowerCase(),name:'Store Admin',role:'admin',hash:bcrypt.hashSync(ADMIN_PASSWORD,10)}];
 const allowedOrigins=(process.env.CLIENT_URL||'').split(',').map(x=>x.trim()).filter(Boolean);
